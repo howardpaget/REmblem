@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+
+        <!-- <script src="shared/jquery.js" type="text/javascript"></script>
+        <script src="shared/shiny.js" type="text/javascript"></script>
+        <link rel="stylesheet" type="text/css" href="shared/shiny.css"/> -->
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+        <script src="shared/jquery.min.js"></script>
+        <link href="shared/shiny.css" rel="stylesheet" />
+        <script src="shared/shiny.min.js"></script>
+        <link href="shared/selectize/css/selectize.bootstrap3.css" rel="stylesheet" />
+        <link href="sF/styles.css" rel="stylesheet" />
+        <link href="sF/fileIcons.css" rel="stylesheet" />
+        <link href="bootstrap.min.css" rel="stylesheet" />
+
+        <style>.shinyjs-hide { display: none !important; }</style>
+        <script>
+            Shiny.addCustomMessageHandler('shinyjs-show', function(params) { shinyjs.debugMessage('shinyjs: calling function "show" with parameters:'); shinyjs.debugMessage(params); shinyjs.show(params);});
+            Shiny.addCustomMessageHandler('shinyjs-hide', function(params) { shinyjs.debugMessage('shinyjs: calling function "hide" with parameters:'); shinyjs.debugMessage(params); shinyjs.hide(params);});
+            Shiny.addCustomMessageHandler('shinyjs-toggle', function(params) { shinyjs.debugMessage('shinyjs: calling function "toggle" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggle(params);});
+            Shiny.addCustomMessageHandler('shinyjs-enable', function(params) { shinyjs.debugMessage('shinyjs: calling function "enable" with parameters:'); shinyjs.debugMessage(params); shinyjs.enable(params);});
+            Shiny.addCustomMessageHandler('shinyjs-disable', function(params) { shinyjs.debugMessage('shinyjs: calling function "disable" with parameters:'); shinyjs.debugMessage(params); shinyjs.disable(params);});
+            Shiny.addCustomMessageHandler('shinyjs-toggleState', function(params) { shinyjs.debugMessage('shinyjs: calling function "toggleState" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggleState(params);});
+            Shiny.addCustomMessageHandler('shinyjs-addClass', function(params) { shinyjs.debugMessage('shinyjs: calling function "addClass" with parameters:'); shinyjs.debugMessage(params); shinyjs.addClass(params);});
+            Shiny.addCustomMessageHandler('shinyjs-removeClass', function(params) { shinyjs.debugMessage('shinyjs: calling function "removeClass" with parameters:'); shinyjs.debugMessage(params); shinyjs.removeClass(params);});
+            Shiny.addCustomMessageHandler('shinyjs-toggleClass', function(params) { shinyjs.debugMessage('shinyjs: calling function "toggleClass" with parameters:'); shinyjs.debugMessage(params); shinyjs.toggleClass(params);});
+            Shiny.addCustomMessageHandler('shinyjs-html', function(params) { shinyjs.debugMessage('shinyjs: calling function "html" with parameters:'); shinyjs.debugMessage(params); shinyjs.html(params);});
+            Shiny.addCustomMessageHandler('shinyjs-onevent', function(params) { shinyjs.debugMessage('shinyjs: calling function "onevent" with parameters:'); shinyjs.debugMessage(params); shinyjs.onevent(params);});
+            Shiny.addCustomMessageHandler('shinyjs-info', function(params) { shinyjs.debugMessage('shinyjs: calling function "info" with parameters:'); shinyjs.debugMessage(params); shinyjs.info(params);});
+            Shiny.addCustomMessageHandler('shinyjs-logjs', function(params) { shinyjs.debugMessage('shinyjs: calling function "logjs" with parameters:'); shinyjs.debugMessage(params); shinyjs.logjs(params);});
+            Shiny.addCustomMessageHandler('shinyjs-runjs', function(params) { shinyjs.debugMessage('shinyjs: calling function "runjs" with parameters:'); shinyjs.debugMessage(params); shinyjs.runjs(params);});
+            Shiny.addCustomMessageHandler('shinyjs-reset', function(params) { shinyjs.debugMessage('shinyjs: calling function "reset" with parameters:'); shinyjs.debugMessage(params); shinyjs.reset(params);});
+            Shiny.addCustomMessageHandler('shinyjs-delay', function(params) { shinyjs.debugMessage('shinyjs: calling function "delay" with parameters:'); shinyjs.debugMessage(params); shinyjs.delay(params);});
+        </script>
+        <!-- <script src="shinyjs/shinyjs-default-funcs.js"></script> -->
+
+
+
+        <script src="shinyjs-default-funcs.js"></script>
+        <script>shinyjs.debug = false;</script>
+        <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="bower_components/app-layout/app-toolbar/app-toolbar.html"/>
+        <link rel="import" href="bower_components/app-layout/app-header/app-header.html"/>
+        <link rel="import" href="bower_components/app-layout/app-header-layout/app-header-layout.html"/>
+        <link rel="import" href="bower_components/app-layout/app-drawer-layout/app-drawer-layout.html"/>
+        <link rel="import" href="bower_components/app-layout/app-drawer/app-drawer.html"/>
+        <link rel="import" href="bower_components/iron-icons/iron-icons.html"/>
+        <link rel="import" href="bower_components/paper-button/paper-button.html"/>
+        <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html"/>
+        <link rel="import" href="bower_components/paper-spinner/paper-spinner.html"/>
+        <link rel="import" href="bower_components/paper-toast/paper-toast.html"/>
+        <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+        <link rel="import" href="bower_components/paper-menu-button/paper-menu-button.html"/>
+        <link rel="import" href="bower_components/paper-item/paper-item.html"/>
+        <link rel="import" href="bower_components/paper-menu/paper-menu.html"/>
+
+        <script src="bower_components/handsontable/dist/handsontable.full.js"></script>
+        <link rel="stylesheet" media="screen" href="bower_components/handsontable/dist/handsontable.full.css"/>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+
+        <link rel="import" href="components/login-element.html"/>
+        <link rel="import" href="components/load-model.html"/>
+        <link rel="import" href="components/select-model-variable.html"/>
+        <link rel="import" href="components/model-factor-list.html"/>
+        <link rel="import" href="components/model-chart.html"/>
+        <link rel="import" href="components/model-summary.html"/>
+        <link rel="import" href="components/edit-grouping.html"/>
+        <script src="js/ModelUtils.js"></script>
+        <script src="sF/shinyFiles.js"></script>
+
+        <style is="custom-style">
+            *:not(.glyphicon){
+                box-sizing: border-box;
+                font-family: 'Roboto', Helvetica, sans-serif;
+            }
+
+            body {
+                margin: 0px;
+                padding: 0px;
+            }
+
+            app-toolbar {
+                background-color: #1E88E5;
+                font-family: 'Roboto', Helvetica, sans-serif;
+                color: white;
+                --app-toolbar-font-size: 24px;
+            }
+
+            paper-spinner {
+                width: 16px;
+                height: 16px;
+                --paper-spinner-layer-1-color: #555;
+                --paper-spinner-layer-2-color: #555;
+                --paper-spinner-layer-3-color: #555;
+                --paper-spinner-layer-4-color: #555;
+            }
+
+            .overlay{
+                position: fixed;
+                left: 0px;
+                right: 0px;
+                top: 0px;
+                bottom: 0px;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            #fit-model{
+                font-size: 12pt;
+                background-color: #ffffff;
+                color: #000000;
+            }
+        </style>
+
+        <script src="js/REmblemController.js"></script>
+        <script src="js/ShinyServerCallbacks.js"></script>
+
+        <script>
+        var remblemController = new REmblemController();
+
+        function init(){
+            remblemController.init();
+            // remblemController.requestLists();
+
+            document.querySelector('#fit-model').addEventListener('tap', remblemController.onFitModelClicked);
+
+            document.querySelector('#download-model-description').addEventListener('tap', remblemController.onDownloadModelDescClicked);
+            document.querySelector('#download-model').addEventListener('tap', remblemController.onDownloadModelClicked);
+
+            document.querySelector('#help').addEventListener('tap', remblemController.onHelpClicked);
+        }
+
+        window.addEventListener('load', init);
+        </script>
+    </head>
+
+    <body unresolved>
+        <div id="overlay" class="overlay" style="display: none"></div>
+        <!-- <app-drawer-layout> -->
+
+        <app-header-layout>
+            <app-header fixed style="z-index: 100000">
+                <app-toolbar class="horizontal layout">
+                    <div main-title>REmblem</div>
+                    <!-- <paper-icon-button id="fit-model" icon="icons:refresh" horizontal-align="right"></paper-icon-button> -->
+
+                    <paper-button id="fit-model" raised>Fit Model <paper-spinner id="fit-model-spinner" style="margin-left: 10px;" active></paper-spinner></paper-button>
+
+                    <paper-menu-button horizontal-align="right">
+                        <paper-icon-button icon="icons:menu" noink class="dropdown-trigger"></paper-icon-button>
+
+                        <paper-menu class="dropdown-content">
+                            <paper-item id="download-model-description">Download Model Description (JSON)</paper-item>
+                            <paper-item id="download-model">Download Model (Serialised R Object)</paper-item>
+                            <paper-item id="help">Help</paper-item>
+                        </paper-menu>
+                    </paper-menu-button>
+                </app-toolbar>
+
+            </app-header>
+
+            <!-- <app-drawer>
+            drawer-content
+            </app-drawer> -->
+
+            <div>
+                <!-- <button id="files" type="button" class="shinyFiles btn" data-title="Please select a file" data-selecttype="single">
+                    File select
+                </button> -->
+                <login-element></login-element>
+                <load-model></load-model>
+                <select-model-variable></select-model-variable>
+                <model-factor-list></model-factor-list>
+                <model-chart></model-chart>
+                <model-summary></model-summary>
+
+            </div>
+
+        </app-header-layout>
+
+        <edit-grouping></edit-grouping>
+    <!-- </app-drawer-layout> -->
+    </body>
+</html>

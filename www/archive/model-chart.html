@@ -1,0 +1,142 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<script src="../bower_components/Chart.js/dist/Chart.bundle.min.js"></script>
+
+<dom-module id="model-chart">
+    <template>
+        <style>
+        </style>
+
+        <div>
+            <span>{{factor}}</span>
+            <div style="width: 90%">
+                <canvas id="myChart" width="300" height="200"></canvas>
+            </div>
+            <script>
+                Chart.defaults.global.elements.line.tension = 0;
+                var barChartData = {
+                    labels: ["-"],
+                    datasets: [{
+                        label: "Predictor",
+                        type:'line',
+                        data: [0],
+                        fill: false,
+                        borderColor: '#B0EB74',
+                        backgroundColor: '#B0EB74',
+                        pointBorderColor: '#B0EB74',
+                        pointBackgroundColor: '#B0EB74',
+                        pointHoverBackgroundColor: '#B0EB74',
+                        pointHoverBorderColor: '#B0EB74',
+                        yAxisID: 'y-axis-1'
+                    },{
+                        label: "Fitted",
+                        type:'line',
+                        data: [0],
+                        fill: false,
+                        borderColor: '#00002F',
+                        backgroundColor: '#00002F',
+                        pointBorderColor: '#00002F',
+                        pointBackgroundColor: '#00002F',
+                        pointHoverBackgroundColor: '#00002F',
+                        pointHoverBorderColor: '#00002F',
+                        yAxisID: 'y-axis-1'
+                    },{
+                        label: "Observed",
+                        type:'line',
+                        data: [0],
+                        fill: false,
+                        borderColor: '#E56EB9',
+                        backgroundColor: '#E56EB9',
+                        pointBorderColor: '#E56EB9',
+                        pointBackgroundColor: '#E56EB9',
+                        pointHoverBackgroundColor: '#E56EB9',
+                        pointHoverBorderColor: '#E56EB9',
+                        yAxisID: 'y-axis-1'
+                    },{
+                        type: 'bar',
+                        label: "Visitor",
+                        data: [0],
+                        fill: false,
+                        backgroundColor: 'rgba(115, 146, 216, 0.5)',
+                        borderColor: '#7392D8',
+                        hoverBackgroundColor: 'rgba(115, 146, 216, 0.8)',
+                        hoverBorderColor: '#7392D8',
+                        yAxisID: 'y-axis-2'
+                    } ]
+                };
+                var ctx = document.getElementById("myChart");
+                window.myBar = new Chart(ctx, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                    responsive: true,
+                    tooltips: {
+                        mode: 'label'
+                    },
+                    elements: {
+                        line: {
+                            fill: false
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            gridLines: {
+                                display: false
+                            },
+                            labels: {
+                                show: true,
+                            }
+                        }],
+                        yAxes: [{
+                            type: "linear",
+                            display: true,
+                            position: "left",
+                            id: "y-axis-1",
+                            gridLines: {
+                                display: false
+                            },
+                            labels: {
+                                show:true
+                            }
+                            }, {
+                            type: "linear",
+                            display: true,
+                            position: "right",
+                            id: "y-axis-2",
+                            gridLines: {
+                                display: false
+                            },
+                            labels: {
+                                show:true
+                            }
+                            }]
+                        }
+                    }
+                });
+            </script>
+        </div>
+    </template>
+
+    <script>
+    Polymer({
+        is: 'model-chart',
+        properties: {
+            factor: String,
+            chart_data: Object
+        },
+        set_chart_data: function(chart_data){
+            this.chart_data = chart_data;
+
+            myBar.data.labels = chart_data['levels'];
+
+            myBar.data.datasets[0].data = chart_data['predictor'];
+            myBar.data.datasets[1].data = chart_data['fitted'];
+            myBar.data.datasets[2].data = chart_data['observed'];
+            myBar.data.datasets[3].data = chart_data['volume'];
+
+            myBar.update();
+        }
+    });
+    </script>
+
+</dom-module>

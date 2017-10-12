@@ -1,0 +1,41 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="model-summary">
+    <template>
+        <style>
+        .summary{
+            position: fixed;
+            bottom: 0px;
+            left: 30%;
+            width: 70%;
+            height: 25%;
+            overflow: scroll;
+            border-top: solid #ccc 1px;
+            background-color: #ffffff;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        </style>
+
+        <div class="summary">
+            <pre>{{summary}}</pre>
+        </div>
+    </template>
+
+    <script>
+    Polymer({
+        is: 'model-summary',
+        properties: {
+            summary: String
+        },
+        show: function(){
+            this.style.display = '';
+        },
+        hide: function(){
+            this.style.display = 'none';
+        }
+    });
+    </script>
+
+</dom-module>

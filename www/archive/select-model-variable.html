@@ -1,0 +1,54 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<dom-module id="select-model-variable">
+
+  <template>
+
+    <style>
+    paper-card{
+        padding: 10px;
+        width: 80%;
+        margin: 20px 0px 10px 10%;
+    }
+    </style>
+
+    <paper-card>
+        <h3>Select the response variable</h3>
+
+        <paper-dropdown-menu label="Response variable">
+            <paper-listbox class="dropdown-content">
+                <template is="dom-repeat" items="{{model_variables}}">
+                    <paper-item>{{item}}</paper-item>
+                </template>
+            </paper-listbox>
+        </paper-dropdown-menu><div></div>
+
+        <paper-button raised on-tap="onSelectVariableClicked">Select Variable</paper-button>
+    </paper-card>
+
+
+  </template>
+
+    <script>
+    Polymer({
+        is: 'select-model-variable',
+        properties: {
+            model_variables: Array
+        },
+        ready: function(){
+            this.model_variables = [];
+        },
+        onSelectVariableClicked: function(){
+            Shiny.onInputChange('modelvariable', this.querySelector('paper-listbox').selectedItem.innerText.trim());
+            // document.querySelector('.overlay').style.display = '';
+
+        }
+    });
+    </script>
+
+</dom-module>

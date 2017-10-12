@@ -1,0 +1,93 @@
+<link rel="import" href="../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../bower_components/paper-card/paper-card.html"/>
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html"/>
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html"/>
+<link rel="import" href="../bower_components/paper-item/paper-item.html"/>
+<link rel="import" href="../bower_components/paper-button/paper-button.html"/>
+
+<dom-module id="load-model-card">
+
+  <template>
+
+    <style>
+    paper-card{
+        padding: 10px;
+        width: 80%;
+        margin: 20px 0px 10px 10%;
+    }
+    </style>
+
+    <paper-card>
+        <h3>Load a previous model</h3>
+        <paper-dropdown-menu label="Models">
+            <paper-listbox class="dropdown-content">
+                <template is="dom-repeat" items="{{models}}">
+                    <paper-item>{{item}}</paper-item>
+                </template>
+            </paper-listbox>
+        </paper-dropdown-menu><div></div>
+
+        <paper-button raised on-tap="onLoadModelClicked">Load Model</paper-button>
+
+        <h3>Create a new model</h3>
+        <paper-dropdown-menu label="Dataset">
+            <paper-listbox class="dropdown-content">
+                <template is="dom-repeat" items="{{datasets}}">
+                    <paper-item>{{item}}</paper-item>
+                </template>
+            </paper-listbox>
+        </paper-dropdown-menu><div></div>
+
+        <paper-dropdown-menu label="Distribution">
+            <paper-listbox class="dropdown-content">
+                <paper-item>Binomial</paper-item>
+                <paper-item>Gamma</paper-item>
+                <paper-item>Normal</paper-item>
+            </paper-listbox>
+        </paper-dropdown-menu><div></div>
+
+        <paper-dropdown-menu label="Link">
+            <paper-listbox class="dropdown-content">
+                <paper-item>Log</paper-item>
+                <paper-item>Logit</paper-item>
+            </paper-listbox>
+        </paper-dropdown-menu><div></div>
+
+        <paper-button raised on-tap="onCreateModelClicked">Create Model</paper-button>
+    </paper-card>
+
+
+  </template>
+
+    <script>
+    Polymer({
+        is: 'load-model-card',
+        properties: {
+            models: Array,
+            datasets: Array
+        },
+        ready: function(){
+            this.models = [];
+            this.datasets = [];
+            window.addEventListener('load', this.fully_loaded.bind(this));
+        },
+        fully_loaded: function(){
+            if(Shiny.onInputChange){
+                Shiny.onInputChange('request_models', '');
+                Shiny.onInputChange('request_datasets', '');
+            }else{
+                setTimeout(this.fully_loaded.bind(this), 100);
+            }
+        },
+        onLoadModelClicked: function(){
+
+        },
+        onCreateModelClicked: function(){
+            Shiny.onInputChange('loaddata', '');
+            document.querySelector('.overlay').style.display = '';
+
+        }
+    });
+    </script>
+
+</dom-module>

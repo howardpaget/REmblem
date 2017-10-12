@@ -1,0 +1,106 @@
+<link rel="import" href="../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../bower_components/paper-card/paper-card.html"/>
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html"/>
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html"/>
+<link rel="import" href="../bower_components/paper-item/paper-item.html"/>
+<link rel="import" href="../bower_components/paper-button/paper-button.html"/>
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html"/>
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html"/>
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html"/>
+<link rel="import" href="../bower_components/paper-button/paper-button.html"/>
+<link rel="import" href="model-sub-factor.html"/>
+
+
+<dom-module id="model-factor">
+
+    <template>
+
+    <style>
+    .factor {
+        padding: 0px 0px 0px 10px;
+        height: 48px;
+        background-color: #ddd;
+        font-family: 'Roboto', Helvetica, sans-serif;
+        color: #101010;
+        --app-toolbar-font-size: 12px;
+    }
+
+    .title{
+        font-size: 10pt;
+    }
+
+    paper-button{
+        max-width: 10px !important;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    paper-icon-button{
+        color: #555;
+    }
+    </style>
+
+    <!-- <template is="dom-repeat" items="{{factorList}}">
+        <sub-factor sub-factor={{item}}></sub-factor>
+    </template> -->
+
+    <app-toolbar class="factor">{{factor.name}}
+        <span style="flex: 1;"></span>
+        <paper-button on-tap="onCreateNewGroupClicked">+ Group</paper-button>
+        <paper-button on-tap="onCreateNewVariateClicked">+ Variate</paper-button>
+        <!-- <paper-icon-button icon="icons:timeline" on-tap="onChartClicked"></paper-icon-button> -->
+    </app-toolbar>
+    <template id="sub-factor-list" is="dom-repeat" items="{{factor.factors}}">
+        <model-sub-factor id="{{factor.name}}" factorname="{{factor.name}}" subfactor={{item}}></model-sub-factor>
+    </template>
+
+    </template>
+
+    <script>
+    Polymer({
+        is: 'model-factor',
+        properties: {
+            factor: {type: Object, notify: true}
+        },
+        ready: function() {
+            this.factor = {};
+            this.addEventListener('factor-changed', this.onFactorChange);
+        },
+        setFactor: function(factor){
+            this.factor = factor;
+            this.notifyPath('factor.factors'/*, factor.factors*/);
+            console.log('notified');
+            for(var i in this.factor.factors){
+                if(this.factor.factors[i].name == ''){
+                    continue;
+                }
+                if(this.querySelector('#' + this.factor.factors[i].name)){
+                    var item = this.querySelector('#' + this.factor.factors[i].name);
+                    item.subfactor = this.factor.factors[i];
+                }else{
+                    console.log('create new factor ' + this.factor.factors[i].name);
+                    var item = document.createElement('model-sub-factor');
+                    item.id = this.factor.factors[i].name;
+                    item.factorname = this.factor.name;
+                    item.subfactor = this.factor.factors[i];
+                    this.appendChild(item);
+                }
+            }
+        },
+        onFactorChange: function(){
+            console.log('on factor changed');
+        },
+        onChartClicked: function(event){
+            console.log("factor", this.factor.name);
+            remblemController.onRequestChartClicked(this.factor.name);
+        },
+        onCreateNewGroupClicked: function(event){
+            remblemController.onCreateNewGroupClicked(this.factor);
+        },
+        onCreateNewVariateClicked: function(event){
+            // remblemController.onCreateNewGroupClicked(this.factor.levels);
+        }
+    });
+    </script>
+
+</dom-module>

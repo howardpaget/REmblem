@@ -1,0 +1,53 @@
+<link rel="import" href="../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../bower_components/paper-card/paper-card.html"/>
+<link rel="import" href="../bower_components/paper-button/paper-button.html"/>
+<link rel="import" href="../bower_components/paper-input/paper-input.html"/>
+
+<dom-module id="login-element">
+
+    <template>
+
+    <style>
+    paper-card{
+        padding: 10px;
+        width: 60%;
+        margin: 20px 0px 10px 20%;
+    }
+    </style>
+
+    <!-- <template is="dom-repeat" items="{{factorList}}">
+        <sub-factor sub-factor={{item}}></sub-factor>
+    </template> -->
+
+    <paper-card>
+        <paper-input id="email" label="Email"></paper-input>
+        <paper-input id="password" label="Password" type="password"></paper-input>
+        <paper-button raised on-tap="onLoginClicked">Login</paper-button>
+    </paper-card>
+
+    </template>
+
+    <script>
+    Polymer({
+        is: 'login-element',
+        properties: {
+        },
+        ready: function() {
+
+        },
+        onLoginClicked: function(){
+            var email = this.querySelector('#email').value;
+            var password = this.querySelector('#password').value;
+
+            remblemController.login(email, password);
+        },
+        show: function(){
+            this.style.display = '';
+        },
+        hide: function(){
+            this.style.display = 'none';
+        }
+    });
+    </script>
+
+</dom-module>

@@ -1,0 +1,75 @@
+<link rel="import" href="../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html"/>
+<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html"/>
+<link rel="import" href="../bower_components/paper-input/paper-input.html"/>
+
+<dom-module id="edit-grouping">
+
+    <template>
+
+    <style>
+        #example{
+            /*padding: 10px;*/
+            min-height: 500px;
+            max-height: 500px;
+            height: 60%;
+            width: 300px;
+            max-width: 300px;
+            overflow-x: hidden;
+        }
+        .ht_clone_top{
+            display: none !important;
+        }
+    </style>
+
+    <paper-dialog id="dialog" style="z-index: 1000" modal>
+        <h2>Create a new grouped factor</h2>
+
+        <paper-input label="Factor Name" value="{{factor_name}}"></paper-input>
+        <!-- <paper-dialog-scrollable> -->
+            <div id="example"></div>
+        <!-- </paper-dialog-scrollable> -->
+
+        <div class="buttons">
+            <paper-button dialog-dismiss>Cancel</paper-button>
+            <paper-button dialog-confirm on-tap="onSaveFactorClicked">Update</paper-button>
+        </div>
+    </paper-dialog>
+
+    </template>
+
+    <script>
+    Polymer({
+        is: 'edit-grouping',
+        properties: {
+            factor: String,
+            factor_name: String,
+            hot: Object
+        },
+        ready: function(){
+            var data = [];
+
+            var container = this.querySelector('#example');
+            this.hot = new Handsontable(container, {
+                data: data,
+                rowHeaders: false,
+                colHeaders: ['Level', 'Group'],
+                columns: [{readOnly: true}, {}]
+            });
+        },
+        setData: function(data){
+            this.hot.loadData(data);
+        },
+        show: function(){
+            this.querySelector('#dialog').open();
+
+            this.hot.render();
+            setTimeout(this.hot.render, 100);
+        },
+        onSaveFactorClicked: function(event){
+            remblemController.onSaveFactorClicked(this.factor, this.factor_name, this.hot.getData(), 'grouped');
+        }
+    });
+    </script>
+
+</dom-module>

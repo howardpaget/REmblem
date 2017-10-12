@@ -1,0 +1,107 @@
+<link rel="import" href="../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../bower_components/paper-card/paper-card.html"/>
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html"/>
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html"/>
+<link rel="import" href="../bower_components/paper-item/paper-item.html"/>
+<link rel="import" href="../bower_components/paper-button/paper-button.html"/>
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html"/>
+<link rel="import" href="model-factor.html"/>
+
+
+<dom-module id="model-factor-list">
+
+    <template>
+
+    <style>
+    paper-card{
+        padding: 0px;
+        width: 30%;
+        position: fixed;
+        top: 64px;
+        bottom: 0px;
+        /*margin: 20px 0px 10px 10%;*/
+        /*max-height: 100%;*/
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    .factor {
+        padding: 0px 0px 0px 10px;
+        height: 32px;
+        background-color: #ddd;
+        font-family: 'Roboto', Helvetica, sans-serif;
+        color: #101010;
+        --app-toolbar-font-size: 12px;
+    }
+
+    .sub-factor {
+        padding: 0px 0px 0px 10px;
+        height: 32px;
+        background-color: #fff;
+        font-family: 'Roboto', Helvetica, sans-serif;
+        /*color: #101010;*/
+        --app-toolbar-font-size: 12px;
+    }
+
+    .title{
+        font-size: 10pt;
+    }
+    </style>
+
+    <paper-card>
+        <template id="factor-template" is="dom-repeat" items="{{factorList}}">
+            <model-factor id={{item.name}} factor={{item}}></model-factor1>
+        </template>
+    </paper-card>
+
+    </template>
+
+    <script>
+    Polymer({
+        is: 'model-factor-list',
+        properties: {
+            model: Object,
+            modelText: String,
+            factorList: {type: Array, notify: true, reflectToAttribute: true}
+        },
+        ready: function() {
+            this.model = {};
+            this.factorList = [];
+            this.addEventListener('factor-list-changed', this.onFactorListChange);
+        },
+        setModel: function(model) {
+            this.model = model;
+            this.modelText = JSON.stringify(this.model, 4);
+            var factorList = [];
+            for(var i in this.model){
+                if(i != 'model_details'){
+                    this.model[i]['name'] = i;
+                    factorList.push(this.model[i]);
+
+                    if(this.querySelector('#' + i)){
+                        console.log('#' + i + ' exists');
+                        this.querySelector('#' + i).setFactor(this.model[i]);
+                    }else{
+                        console.log('#' + i + ' does not exist');
+                    }
+                }
+            }
+
+            //this.set('factorList', factorList);
+            this.factorList = factorList;
+            // var template = document.querySelector('#factor-template'); // Use specific selector here
+            // console.log(template.iterator_);
+        },
+        onFactorListChange: function(){
+                console.log('factor list changed', this.factorList);
+        },
+        show: function(){
+            this.style.display = '';
+        },
+        hide: function(){
+            this.style.display = 'none';
+        }
+    });
+    </script>
+
+</dom-module>

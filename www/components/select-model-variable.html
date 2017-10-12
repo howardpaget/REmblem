@@ -1,0 +1,67 @@
+<link rel="import" href="../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../bower_components/paper-card/paper-card.html"/>
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html"/>
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html"/>
+<link rel="import" href="../bower_components/paper-item/paper-item.html"/>
+<link rel="import" href="../bower_components/paper-button/paper-button.html"/>
+
+<dom-module id="select-model-variable">
+
+  <template>
+
+    <style>
+    paper-card{
+        padding: 10px;
+        width: 80%;
+        margin: 20px 0px 10px 10%;
+    }
+    </style>
+
+    <paper-card>
+        <h3>Select the response variable</h3>
+        <paper-dropdown-menu label="Variables">
+            <paper-listbox id="variable-list" class="dropdown-content">
+                <template is="dom-repeat" items="{{variables}}">
+                    <paper-item>{{item}}</paper-item>
+                </template>
+            </paper-listbox>
+        </paper-dropdown-menu><div></div>
+
+        <paper-button raised on-tap="onSelectVariableClicked">Select Variable</paper-button>
+    </paper-card>
+
+  </template>
+
+    <script>
+    Polymer({
+        is: 'select-model-variable',
+        properties: {
+            variables: Array
+        },
+        ready: function() {
+            this.variables = [];
+        },
+        setVariableList: function(variables) {
+            this.variables = variables;
+        },
+        onSelectVariableClicked: function() {
+            /* Tell the server to load a saved model */
+            var variableList = this.$$('#variable-list');
+
+            if(variableList.selectedItem){
+                console.log('onSelectVariableClicked', variableList.selectedItem.innerText.trim());
+                remblemController.onSelectVariableClicked(variableList.selectedItem.innerText.trim());
+            }else{
+                alert('Select from the dropdown menus');
+            }
+        },
+        show: function(){
+            this.style.display = '';
+        },
+        hide: function(){
+            this.style.display = 'none';
+        }
+    });
+    </script>
+
+</dom-module>

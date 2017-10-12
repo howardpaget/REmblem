@@ -1,0 +1,75 @@
+<link rel="import" href="../bower_components/polymer/polymer.html"/>
+<link href="../bower_components/iron-icons/iron-icons.html" rel="import">
+<link href="../bower_components/iron-icons/editor-icons.html" rel="import">
+
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html"/>
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html"/>
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html"/>
+
+<dom-module id="model-sub-factor">
+
+    <template>
+
+    <style>
+    .factor {
+        padding: 0px 0px 0px 10px;
+        height: 48px;
+        background-color: #fff;
+        font-family: 'Roboto', Helvetica, sans-serif;
+        color: #101010;
+        --app-toolbar-font-size: 12px;
+    }
+
+    paper-icon-button{
+        color: #555;
+    }
+    </style>
+
+    <app-toolbar class="factor">
+        <paper-checkbox noink checked="{{subfactor.in_model}}" on-change="onCheckBoxChanged">{{factorName(subfactor)}}</paper-checkbox>
+
+        <span style="flex: 1;"></span>
+        <paper-icon-button id="chart-button" style="display:none" icon="icons:timeline" horizontal-align="right" on-tap="onChartClicked"></paper-icon-button>
+        <paper-icon-button id="edit-button" icon="editor:mode-edit" horizontal-align="right"></paper-icon-button>
+        <!-- icons:timeline
+        editor:mode-edit -->
+    </app-toolbar>
+
+    </template>
+
+    <script>
+    Polymer({
+        is: 'model-sub-factor',
+        properties: {
+            subfactor: {type: Object, notify: true},
+            factorname: String
+        },
+        ready: function(){
+        },
+        factorName: function(subfactor){
+            if(subfactor.type == 'simple'){
+                this.querySelector('#edit-button').style.display = 'none';
+                this.querySelector('#chart-button').style.display = '';
+                return 'Simple Factor'
+            }
+
+            this.querySelector('#chart-button').style.display = 'none';
+
+            if(subfactor.type == 'grouped'){
+                return 'G: ' + subfactor.name;
+            }
+            return 'V: ' + subfactor.name;
+        },
+        onCheckBoxChanged: function(event){
+            console.log(this.subfactor);
+            remblemController.onChangeFactor(this.factorname, this.subfactor);
+        },
+        onChartClicked: function(event){
+            console.log(this.factorname);
+            console.log(this.subfactor.name);
+            remblemController.onRequestChartClicked(this.subfactor.name == '' ? this.factorname : this.subfactor.name);
+        }
+    });
+    </script>
+
+</dom-module>

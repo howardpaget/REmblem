@@ -1,0 +1,118 @@
+<link rel="import" href="../bower_components/polymer/polymer.html"/>
+<link rel="import" href="../bower_components/paper-card/paper-card.html"/>
+<link rel="import" href="../bower_components/paper-dropdown-menu/paper-dropdown-menu.html"/>
+<link rel="import" href="../bower_components/paper-listbox/paper-listbox.html"/>
+<link rel="import" href="../bower_components/paper-item/paper-item.html"/>
+<link rel="import" href="../bower_components/paper-button/paper-button.html"/>
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html"/>
+
+<dom-module id="load-model">
+
+  <template>
+
+    <style>
+    paper-card{
+        padding: 10px;
+        width: 80%;
+        margin: 20px 0px 10px 10%;
+    }
+    </style>
+
+    <paper-card>
+        <h3>Load a previous model</h3>
+        <paper-toast duration="0" text="sdfsdf"></paper-toast>
+
+        <paper-button id="jsonfiles" type="button" class="shinyFiles btn" data-title="Please select a file" data-selecttype="single" raised style="background: #5C6BC0; color: #ffffff;">Load Model</paper-button>
+
+        <h3 style="margin-top: 32px">Create a new model</h3>
+
+        <paper-button id="csvfiles" type="button" class="shinyFiles btn" data-title="Please select a file" data-selecttype="single" raised style="background: #FFC107; color: #ffffff;">Select Dataset</paper-button><span id="dataset">Not set</span>
+        <div></div>
+
+        <paper-dropdown-menu label="Distribution">
+            <paper-listbox id="distribution-list" class="dropdown-content">
+                <paper-item>Binomial</paper-item>
+                <paper-item>Gamma</paper-item>
+                <paper-item>Normal</paper-item>
+            </paper-listbox>
+        </paper-dropdown-menu><div></div>
+
+        <paper-dropdown-menu label="Link">
+            <paper-listbox id="link-function-list" class="dropdown-content">
+                <paper-item>Log</paper-item>
+                <paper-item>Logit</paper-item>
+            </paper-listbox>
+        </paper-dropdown-menu><div></div>
+
+        <paper-button raised on-tap="onCreateModelClicked" style="background: #5C6BC0; color: #ffffff;">Create Model</paper-button>
+    </paper-card>
+
+  </template>
+
+    <script>
+    Polymer({
+        is: 'load-model',
+        properties: {
+            models: Array,
+            datasets: Array,
+            datasetfile: String
+        },
+        ready: function() {
+            this.models = [];
+            this.datasets = [];
+            this.datasetfile = '';
+
+            //this.setDataset = this.setDataset.bind(this);
+        },
+        setModelList: function(models) {
+            this.models = models;
+        },
+        setDatasetList: function(datasets) {
+            this.datasets = datasets;
+        },
+        setDataset: function(dataset) {
+            console.log(this);
+            this.$$('#dataset').innerHTML = dataset;
+            this.datasetfile = this.$$('#dataset').innerText;
+        },
+        onLoadModelClicked: function() {
+            /* Tell the server to load an old model */
+            var modelList = this.$$('#model-list');
+
+            if(modelList.selectedItem){
+                console.log('onLoadModelClicked', modelList.selectedItem.innerText.trim());
+                remblemController.onLoadModelClicked(modelList.selectedItem.innerText.trim());
+            }else{
+                alert('Select from the dropdown menus');
+            }
+        },
+        onCreateModelClicked: function() {
+            /* Pass the dataset, distribution and link information to the server to create a new model */
+            var distributionList = this.$$('#distribution-list');
+            var linkFunctionList = this.$$('#link-function-list');
+
+            console.log(this.datasetfile);
+
+            if(this.datasetfile && distributionList.selectedItem && linkFunctionList.selectedItem){
+                console.log('onCreateModelClicked',
+                            'Dataset: ', this.datasetfile.trim(),
+                            'Distribution: ', distributionList.selectedItem.innerText.trim(),
+                            'Link: ', linkFunctionList.selectedItem.innerText.trim());
+
+                remblemController.onCreateModelClicked(this.datasetfile.trim(),
+                                                     distributionList.selectedItem.innerText.trim(),
+                                                     linkFunctionList.selectedItem.innerText.trim());
+            }else{
+                alert('Select from the dropdown menus');
+            }
+        },
+        show: function(){
+            this.style.display = '';
+        },
+        hide: function(){
+            this.style.display = 'none';
+        }
+    });
+    </script>
+
+</dom-module>
